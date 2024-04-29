@@ -1,0 +1,296 @@
+import random
+
+# number guesser
+
+print("Choose a game!")
+game = int(input("Choose a number 1-5 to choose your game!"))
+
+# number guesser
+if game == 1:
+
+    def computer_guesser():
+        print("Welcome to the Number Guessing Game!")
+        input("""Think of a number between 1 and 100, and I'll try to guess it.
+        Press enter to continue""")
+    
+        # Define the range of numbers
+        bot_num = 1
+        top_num = 100
+    
+        # number of attempts
+        attempts = 0
+    
+        while True:
+            # Generate a guess
+            guess = random.randint(bot_num, top_num)
+            print(f"My guess is: {guess}")
+    
+            # get user feedback
+            feedback = input("Is my guess too high (H), too low (L), or correct (C)? ").upper()
+    
+            # adding to the number of attempts
+            attempts += 1
+    
+            # Check user feedback
+            if feedback == 'C':
+                print(f"I guessed your number {guess} correctly in {attempts} attempts!")
+                break
+            elif feedback == 'H':
+                top_num = guess - 1
+            elif feedback == 'L':
+                bot_num = guess + 1
+            else:
+                print("Invalid feedback. Please enter 'H' for too high, 'L' for too low, or 'C' for correct.")
+    
+    # Call the function to start the game
+    computer_guesser()
+
+# hangman game
+elif game == 2:
+
+    def choose_word():
+        words = ["apple", "banana", "orange", "grape", "kiwi", "pineapple", "strawberry", "blueberry", "storage", "couple", "mention", "poison", "friendly", "concern", "excess", "revoke", "thigh", "accent", "object", "finish", "jealous", "climate", "message", "rescue", "temple", "injury", "matter", "recycle", "module", "ensure"]
+        return random.choice(words)
+    
+    def display_word(word, guessed_letters):
+        displayed_word = ""
+        for letter in word:
+            if letter in guessed_letters:
+                displayed_word += letter
+            else:
+                displayed_word += "_"
+        return displayed_word
+    
+    def hangman():
+        print("Welcome to Hangman!")
+        word = choose_word()
+        guessed_letters = []
+        attempts = 6
+        
+        while attempts > 0:
+            print("\nWord:", display_word(word, guessed_letters))
+            print("Attempts left:", attempts)
+            
+            guess = input("Guess a letter: ").lower()
+            
+            if len(guess) != 1 or not guess.isalpha():
+                print("Please enter a single letter.")
+                continue
+            
+            if guess in guessed_letters:
+                print("You already guessed that letter.")
+                continue
+            
+            guessed_letters.append(guess)
+            
+            if guess not in word:
+                attempts -= 1
+                print("Incorrect guess!")
+                if attempts == 0:
+                    print("\nYou're out of attempts! The word was:", word)
+                    break
+            else:
+                print("Correct guess!")
+                if "_" not in display_word(word, guessed_letters):
+                    print("\nCongratulations! You've guessed the word:", word)
+                    break
+    
+    hangman()
+    
+# scrambled word guesser
+elif game == 3:
+    
+
+    def scramble_word(word):
+        scrambled_word = list(word)
+        random.shuffle(scrambled_word)
+        return ''.join(scrambled_word)
+    
+    def choose_word():
+        words = ["apple", "banana", "orange", "grape", "kiwi", "pineapple", "strawberry", "blueberry", "storage", "couple", "mention", "poison", "friendly", "concern", "excess", "revoke", "thigh", "accent", "object", "finish", "jealous", "climate", "message", "rescue", "temple", "injury", "matter", "recycle", "module", "ensure"]
+        return random.choice(words)
+    
+    def word_scrambler():
+        print("Welcome to Word Scrambler!")
+        word = choose_word()
+        scrambled = scramble_word(word)
+        
+        print("Scrambled word:", scrambled)
+        
+        while True:
+            guess = input("Guess the word: ").lower()
+            
+            if guess == word:
+                print("Congratulations! You've unscrambled the word correctly!")
+                break
+            else:
+                print("Incorrect guess. Try again!")
+    
+    word_scrambler()
+    
+# rock paper scissors
+elif game == 4:
+
+    def get_user_choice():
+        while True:
+            user_choice = input("Enter your choice (rock, paper, scissors): ").lower()
+            if user_choice in ["rock", "paper", "scissors"]:
+                return user_choice
+            else:
+                print("Invalid choice. Please enter rock, paper, or scissors.")
+    
+    def get_computer_choice():
+        return random.choice(["rock", "paper", "scissors"])
+    
+    def determine_winner(user_choice, computer_choice):
+        if user_choice == computer_choice:
+            return "It's a tie!"
+        elif (user_choice == "rock" and computer_choice == "scissors") or \
+             (user_choice == "paper" and computer_choice == "rock") or \
+             (user_choice == "scissors" and computer_choice == "paper"):
+            return "You win!"
+        else:
+            return "Computer wins!"
+    
+    def play_game():
+        print("Welcome to Rock-Paper-Scissors!")
+        while True:
+            user_choice = get_user_choice()
+            computer_choice = get_computer_choice()
+            
+            print("You chose:", user_choice)
+            print("Computer chose:", computer_choice)
+            
+            print(determine_winner(user_choice, computer_choice))
+            
+            play_again = input("Do you want to play again? (yes/no): ").lower()
+            if play_again != "yes":
+                print("Thanks for playing!")
+                break
+    
+    play_game()
+    
+
+elif game == 5:
+    
+
+    class Card:
+        def __init__(self, suit, value):
+            self.suit = suit
+            self.value = value
+    
+        def __str__(self):
+            return f"{self.value} of {self.suit}"
+    
+    class Deck:
+        def __init__(self):
+            self.cards = []
+            self.generate_deck()
+    
+        def generate_deck(self):
+            suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+            values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
+            
+            for suit in suits:
+                for value in values:
+                    self.cards.append(Card(suit, value))
+    
+        def shuffle(self):
+            random.shuffle(self.cards)
+    
+        def deal_card(self):
+            if len(self.cards) > 0:
+                return self.cards.pop()
+            else:
+                print("No cards left in the deck.")
+    
+    def calculate_hand_value(hand):
+        value = 0
+        num_aces = 0
+    
+        for card in hand:
+            if card.value.isdigit():
+                value += int(card.value)
+            elif card.value in ['Jack', 'Queen', 'King']:
+                value += 10
+            else:  # Ace
+                num_aces += 1
+                value += 11
+    
+        # Adjust for aces
+        while value > 21 and num_aces > 0:
+            value -= 10
+            num_aces -= 1
+    
+        return value
+    
+    def print_hand(hand, hide_first_card=False):
+        for i, card in enumerate(hand):
+            if hide_first_card and i == 0:
+                print("Hidden Card")
+            else:
+                print(card)
+        print("Total Value:", calculate_hand_value(hand))
+    
+    def play_blackjack():
+        deck = Deck()
+        deck.shuffle()
+    
+        player_hand = [deck.deal_card(), deck.deal_card()]
+        dealer_hand = [deck.deal_card(), deck.deal_card()]
+    
+        print("Dealer's Hand:")
+        print_hand(dealer_hand, hide_first_card=True)
+    
+        print("\nYour Hand:")
+        print_hand(player_hand)
+    
+        # Player's turn
+        while True:
+            action = input("\nDo you want to hit or stand? (h/s): ").lower()
+            if action == 'h':
+                player_hand.append(deck.deal_card())
+                print("\nYour Hand:")
+                print_hand(player_hand)
+                if calculate_hand_value(player_hand) > 21:
+                    print("Busted! You lose.")
+                    return
+            elif action == 's':
+                break
+            else:
+                print("Invalid input. Please enter 'h' to hit or 's' to stand.")
+    
+        # Dealer's turn
+        print("\nDealer's Turn:")
+        print_hand(dealer_hand)
+        while calculate_hand_value(dealer_hand) < 17:
+            dealer_hand.append(deck.deal_card())
+            print("\nDealer draws a card:")
+            print_hand(dealer_hand)
+    
+        # Determine the winner
+        player_value = calculate_hand_value(player_hand)
+        dealer_value = calculate_hand_value(dealer_hand)
+    
+        print("\nFinal Results:")
+        print("Your Hand:")
+        print_hand(player_hand)
+        print("\nDealer's Hand:")
+        print_hand(dealer_hand)
+    
+        if player_value > 21:
+            print("Busted! You lose.")
+        elif dealer_value > 21 or player_value > dealer_value:
+            print("Congratulations! You win!")
+        elif player_value < dealer_value:
+            print("Dealer wins!")
+        else:
+            print("It's a tie!")
+    
+    play_blackjack()
+    
+else:
+    print("Bruh")
+    quit()
+
+print("Noice")
